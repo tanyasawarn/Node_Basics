@@ -6,13 +6,22 @@ const server = http.createServer((request, response) => {
   const method = request.method;
 
   if (url === '/') {
-   response.write('<html>');
+
+   fs.readFile('message.txt', {encoding:"utf-8"},(err,data)=>{
+      if(err){
+         console.log(err);
+      }
+      console.log(`data from file` +data);
+      response.write('<html>');
    response.write('<head><title>Enter Message</title></head>');
+   response.write(`<body>${data}</body>`)
    response.write(
      '<body><form action="/message" method="POST"><input type="text" name="message"/><button type="submit">Send</button></form></body>'
    );
    response.write('</html>');
    return response.end();
+   })
+    
  }
 
   if (url === '/message' && method === 'POST') {
